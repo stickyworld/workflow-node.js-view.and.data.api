@@ -15,7 +15,7 @@
 // DOES NOT WARRANT THAT THE OPERATION OF THE PROGRAM WILL BE
 // UNINTERRUPTED OR ERROR FREE.
 /////////////////////////////////////////////////////////////////////////////////
-var defaultUrn = '<replace with your encoded urn>';
+var defaultUrn = 'dXJuOmFkc2sub2JqZWN0czpvcy5vYmplY3Q6bW9kZWwyMDE2LTA2LTE0LTE3LTQ0LTA2LWIxendia3B6aGc1dDU1c2ptZ3gyYjVwYmpsY2EvUm9ib3RBcm0uZHdmeA==';
 
 $(document).ready(function () {
     var tokenurl = 'http://' + window.location.host + '/api/token';
@@ -43,11 +43,23 @@ $(document).ready(function () {
                 $('#viewerDiv')[0],
                 viewerConfig);
 
+            viewer.addEventListener(
+              Autodesk.Viewing.GEOMETRY_LOADED_EVENT,
+              function(event) {
+                loadExtensions(viewer);
+              }
+            );
+
             viewer.load(pathInfoCollection.path3d[0].path);
         },
         onError);
 
 });
+
+function loadExtensions(viewer) {
+  viewer.loadExtension('Viewing.Extension.Workshop');
+  viewer.loadExtension('MyToolbarExtension');
+}
 
 function onError(error) {
     console.log('Error: ' + error);
